@@ -294,7 +294,7 @@ def accuracy_leds():
 # Sound Buzzer
 def trigger_buzzer():
 
-    global answer, user_guess, buzzer
+    global answer, user_guess, buzzing, buzzer
     # The buzzer operates differently from the LED
     # While we want the brightness of the LED to change(duty cycle), we want the frequency of the buzzer to change
     # The buzzer duty cycle should be left at 50%
@@ -304,15 +304,15 @@ def trigger_buzzer():
     if (abs(answer - user_guess) == 3):
 		#buzzer = GPIO.PWM(buzzer_sound, 1)
         #buzzer.start(50)
-        buzzer.ChangeFrequency(1)
+        buzzing.ChangeFrequency(1.0)
     elif (abs(answer - user_guess) == 2):
 		#buzzer = GPIO.PWM(buzzer_sound, 0.5)
 		#buzzer.start(50)
-        buzzer.ChangeFrequency(2)
+        buzzing.ChangeFrequency(2.0)
     elif (abs(answer - user_guess) == 1):
 		#buzzer = GPIO.PWM(buzzer_sound, 0.25)
 		#buzzer(50)
-        buzzer.ChangeFrequency(4)
+        buzzing.ChangeFrequency(4.0)
     else:
         GPIO.output(buzzer, GPIO.LOW)
 
