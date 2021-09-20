@@ -132,16 +132,16 @@ def fetch_scores():
     # get however many scores there are
     score_count = ES2EEPROM.read_byte(eeprom, 0) # read byte from register 0
     # Get the scores
-    scores = ES2EEPROM.read_block(eeprom, 1, 13) # read from block 1 because that is where the scores are
+    temp_scores = ES2EEPROM.read_block(eeprom, 1, 13) # read from block 1 because that is where the scores are
     # convert the codes back to ascii
-    for i in range(0, len(scores), 4):
-        scores[i] = chr(scores[i])
-        scores[i+1] = chr(scores[i+1])
-        scores[i+2] = chr(scores[i+2]) # each letter of name
+    for i in range(0, len(temp_scores), 4):
+        temp_scores[i] = chr(temp_scores[i])
+        temp_scores[i+1] = chr(temp_scores[i+1])
+        temp_scores[i+2] = chr(temp_scores[i+2]) # each letter of name
         #scores[i+3] = scores[i+3] # the number of attempts
 	# name = char(scores) # - what?
     # return back the results
-    return score_count, scores
+    return score_count, temp_scores
 
 
 # Save high scores
