@@ -108,7 +108,7 @@ def setup():
 	accuracy = GPIO.PWM(LED_accuracy, 50) # frequency
 	accuracy.start(0) # you start PWM mode by calling start with a duty cycle from 0 to 100 percent
 
-	buzzing = GPIO.PWM(buzzer, 0)
+	buzzing = GPIO.PWM(buzzer, 1)
 	buzzing.start(50)
 
     # Setup debouncing and callbacks
@@ -300,11 +300,11 @@ def trigger_buzzer():
 		#buzzer = GPIO.PWM(buzzer_sound, 1)
         #buzzer.start(50)
         buzzer.ChangeFrequency(1)
-	else if (abs(answer - user_guess) == 2):
+	elif (abs(answer - user_guess) == 2):
 		#buzzer = GPIO.PWM(buzzer_sound, 0.5)
 		#buzzer.start(50)
         buzzer.ChangeFrequency(2)
-	else if (abs(answer - user_guess) == 1):
+	elif (abs(answer - user_guess) == 1):
 		#buzzer = GPIO.PWM(buzzer_sound, 0.25)
 		#buzzer(50)
         buzzer.ChangeFrequency(4)
