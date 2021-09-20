@@ -70,8 +70,10 @@ def display_scores(count, raw_data):
     # print the scores to the screen in the expected format
 	print("There are {} scores. Here are the top 3!".format(count))
     # print out the scores in the required format
-	for i in range(len(raw_data)):
-		print(i + " - "+ raw_data[i-1]+ " took "+ raw_data[i]+ "guesses")
+	#for i in range(len(raw_data)):
+	#	print(i + " - "+ raw_data[i-1]+ " took "+ raw_data[i]+ "guesses")
+    for i in range(1, 4):
+        print(i + " - "+ scores[0] + " took "+ scores[1] + " guesses")
 
 
 # Setup Pins
