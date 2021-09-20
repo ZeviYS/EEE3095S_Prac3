@@ -137,9 +137,10 @@ def fetch_scores():
 
     # convert the codes back to ascii
     for i in range(0, len(temp_scores)-1, 4):
-        temp_scores_2.append() = chr(temp_scores[i])
-        temp_scores_2.append() = chr(temp_scores[i+1])
-        temp_scores_2.append() = chr(temp_scores[i+2]) # each letter of name
+        print(chr(temp_scores[i]) + " " + chr(temp_scores[i+1]) + " " + chr(temp_scores[i+2]))
+        temp_scores_2.append(chr(temp_scores[i]))
+        temp_scores_2.append(chr(temp_scores[i+1]))
+        temp_scores_2.append(chr(temp_scores[i+2])) # each letter of name
         #temp_scores_2[i] = chr(temp_scores[i])
         #temp_scores_2[i+1] = chr(temp_scores[i+1])
         #temp_scores_2[i+2] = chr(temp_scores[i+2]) # each letter of name
@@ -164,7 +165,7 @@ def save_scores():
 	# scores.add() - # add would be if was a set, which wouldn't work for our case because it will only add the element if it doesn't exiist in the set already
     # sort
     for i in range(0, len(temp_scores), 4):
-        print(temp_scores[i] + " " + temp_scores[i+1] + " " + temp_scores[i+2])
+        #print(temp_scores[i] + " " + temp_scores[i+1] + " " + temp_scores[i+2])
         usrname = temp_scores[i] + temp_scores[i+1] + temp_scores[i+2]
         scores.append([usrname, temp_scores[i+3]])
     scores.sort(key=lambda x: x[1]) # means sort the multiple attribute list based off the attribute at x[1] in each element
