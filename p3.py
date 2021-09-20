@@ -68,10 +68,10 @@ def menu():
 
 def display_scores(count, raw_data):
     # print the scores to the screen in the expected format
-	print("There are {} scores. Here are the top 3!".format(count))
+    print("There are {} scores. Here are the top 3!".format(count))
     # print out the scores in the required format
-	#for i in range(len(raw_data)):
-	#	print(i + " - "+ raw_data[i-1]+ " took "+ raw_data[i]+ "guesses")
+    #for i in range(len(raw_data)):
+    #	print(i + " - "+ raw_data[i-1]+ " took "+ raw_data[i]+ "guesses")
     for i in range(1, 4):
         print(i + " - "+ scores[0] + " took "+ scores[1] + " guesses")
 
@@ -86,30 +86,30 @@ def setup():
     name = "" # don't think I have to reset name as that should just get overwritten? not sure tho so just doing it anyway
 
     # Setup board mode
-	GPIO.setmode(GPIO.BOARD)
+    GPIO.setmode(GPIO.BOARD)
 
     # Setup regular GPIO
-	GPIO.setup(LED_value[0], GPIO.OUT) # channel/pin and set to output
-	GPIO.setup(LED_value[1], GPIO.OUT)
-	GPIO.setup(LED_value[2], GPIO.OUT)
-	GPIO.setup(LED_accuracy, GPIO.OUT)
+    GPIO.setup(LED_value[0], GPIO.OUT) # channel/pin and set to output
+    GPIO.setup(LED_value[1], GPIO.OUT)
+    GPIO.setup(LED_value[2], GPIO.OUT)
+    GPIO.setup(LED_accuracy, GPIO.OUT)
 
     GPIO.setup(buzzer, GPIO.OUT)
 
-	GPIO.setup(btn_increase, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-	GPIO.setup(btn_submit, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+    GPIO.setup(btn_increase, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+    GPIO.setup(btn_submit, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 	
-	GPIO.output(LED_value[0], GPIO.LOW) # channel/pin and set to GPIO.LOW, False, or 0
-	GPIO.output(LED_value[1], GPIO.LOW)
-	GPIO.output(LED_value[2], GPIO.LOW)
-	GPIO.output(LED_accuracy, GPIO.LOW)
+    GPIO.output(LED_value[0], GPIO.LOW) # channel/pin and set to GPIO.LOW, False, or 0
+    GPIO.output(LED_value[1], GPIO.LOW)
+    GPIO.output(LED_value[2], GPIO.LOW)
+    GPIO.output(LED_accuracy, GPIO.LOW)
 
     # Setup PWM channels
-	accuracy = GPIO.PWM(LED_accuracy, 50) # frequency
-	accuracy.start(0) # you start PWM mode by calling start with a duty cycle from 0 to 100 percent
+    accuracy = GPIO.PWM(LED_accuracy, 50) # frequency
+    accuracy.start(0) # you start PWM mode by calling start with a duty cycle from 0 to 100 percent
 
-	buzzing = GPIO.PWM(buzzer, 1)
-	buzzing.start(50)
+    buzzing = GPIO.PWM(buzzer, 1)
+    buzzing.start(50)
 
     # Setup debouncing and callbacks
     GPIO.setup(btn_increase, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -127,11 +127,11 @@ def setup():
 
 # Load high scores
 def fetch_scores():
-	global eeprom
+    global eeprom
     # get however many scores there are
-	score_count = ES2EEPROM.read_byte(eeprom, 0) # read byte from register 0
+    score_count = ES2EEPROM.read_byte(eeprom, 0) # read byte from register 0
     # Get the scores
-	scores = ES2EEPROM.read_block(eeprom, 1, 13) # read from block 1 because that is where the scores are
+    scores = ES2EEPROM.read_block(eeprom, 1, 13) # read from block 1 because that is where the scores are
     # convert the codes back to ascii
     for i in range(0, len(scores), 4):
         scores[i] = chr(scores[i])
@@ -149,7 +149,7 @@ def save_scores():
     global name, scores, count
 
     # fetch scores
-	score_count, temp_scores = fetch_scores()
+    score_count, temp_scores = fetch_scores()
     # include new score
     temp_scores.append(name[0])
     temp_scores.append(name[1])
@@ -160,7 +160,7 @@ def save_scores():
     for i in range(0, len(temp_scores), 4):
         usrname = temp_scores[i] + temp_scores[i+1] + temp_scores[i+2]
         scores.append([usrname, temp_scores[i+3]])
-	scores.sort(key=lambda x: x[1]) # means sort the multiple attribute list based off the attribute at x[1] in each element
+    scores.sort(key=lambda x: x[1]) # means sort the multiple attribute list based off the attribute at x[1] in each element
     # update total amount of scores
     score_count+=1
 	#score_amount = length(score)
@@ -185,24 +185,24 @@ def btn_increase_pressed(channel):
     global user_guess, LED_value, LED_accuracy
 
     # Increase the value shown on the LEDs
-	user_guess = user_guess + 1
+    user_guess = user_guess + 1
     if user_guess == 8:
         user_guess = 0 # reset to 0 if we over 7
 
-	if  (user_guess >= 4):
-		GPIO.output(LED_value[2], True)
-	else:
-		GPIO.output(LED_value[2], False)
+    if  (user_guess >= 4):
+        GPIO.output(LED_value[2], True)
+    else:
+        GPIO.output(LED_value[2], False)
 
-	if ((user_guess%2) == 0):
-		GPIO.output(LED_value[0], False)
-	else:
-		GPIO.output(LED_value[0], True)
+    if ((user_guess%2) == 0):
+        GPIO.output(LED_value[0], False)
+    else:
+        GPIO.output(LED_value[0], True)
 
-	if ((user guess == 2) or (user_guess == 3) or (user_guess == 6) or (user_guess == 7)): # hahaha hardcoding is beautiful
-		GPIO.output(LED_value[1], True)
-	else:
-		GPIO.output(LED_value[1], False)
+    if ((user guess == 2) or (user_guess == 3) or (user_guess == 6) or (user_guess == 7)): # hahaha hardcoding is beautiful
+        GPIO.output(LED_value[1], True)
+    else:
+        GPIO.output(LED_value[1], False)
 
 
 
@@ -217,30 +217,30 @@ def btn_guess_pressed(channel):
 
     # If they've pressed and held the button, clear up the GPIO and take them back to the menu screen
     start_time = time.time()
-	while GPIO.input(btn_submit) == GPIO.LOW:
-		time.sleep(0.02)
+    while GPIO.input(btn_submit) == GPIO.LOW:
+        time.sleep(0.02)
         # checks if button is being held down
-		if (time.time() - start_time) > 2: # this was start instead of start_time before, might need to either set the timer for longer though or move the setting the start_time to just above the while loop
-			GPIO.remove_event_detect(btn_increase)
-			GPIO.remove_event_detect(btn_submit)
-			GPIO.cleanup()
-			print("Will return to the menu shortly") # the first GPIO line above until here were below the next 4 lines, which would mean I don't think would work properly because the GPIO was getting cleared *after* the setup
+        if (time.time() - start_time) > 2: # this was start instead of start_time before, might need to either set the timer for longer though or move the setting the start_time to just above the while loop
+            GPIO.remove_event_detect(btn_increase)
+            GPIO.remove_event_detect(btn_submit)
+            GPIO.cleanup()
+            print("Will return to the menu shortly") # the first GPIO line above until here were below the next 4 lines, which would mean I don't think would work properly because the GPIO was getting cleared *after* the setup
             off()
-			setup()
-			welcome()
-			menu()
+            setup()
+            welcome()
+            menu()
             return # end function here and go back to main
     
     print("Your guess: ", user_guess)
 
     # Compare the actual value with the user value displayed on the LEDs
-	if (user_guess == answer):
-		#GPIO.output(LED_value[0], False)
+    if (user_guess == answer):
+        #GPIO.output(LED_value[0], False)
 		#GPIO.output(LED_value[1], False)
 		#GPIO.output(LED_value[2], False)
         off()
         print("Correct!")
-		name = input("Enter your name: ")
+        name = input("Enter your name: ")
         while not end_of_game:
             if len(name) < 3:
                 print("Enter at least 3 characters!")
@@ -248,7 +248,7 @@ def btn_guess_pressed(channel):
             else:
                 name = name[0:3]
                 end_of_game = True
-		        save_scores()
+                save_scores()
     else:
         print("Wrong!")
         accuracy_leds()
@@ -266,11 +266,11 @@ def btn_guess_pressed(channel):
     # - Store the scores back to the EEPROM, being sure to update the score count
 
 def off():
-	GPIO.output(LED_value[0], GPIO.LOW)
-	GPIO.output(LED_value[1], GPIO.LOW)
-	GPIO.output(LED_value[2], GPIO.LOW)
-	GPIO.output(LED_accuracy, GPIO.LOW)
-	GPIO.output(buzzer, GPIO.LOW)
+    GPIO.output(LED_value[0], GPIO.LOW)
+    GPIO.output(LED_value[1], GPIO.LOW)
+    GPIO.output(LED_value[2], GPIO.LOW)
+    GPIO.output(LED_accuracy, GPIO.LOW)
+    GPIO.output(buzzer, GPIO.LOW)
 
 
 # LED Brightness
@@ -286,7 +286,7 @@ def accuracy_leds():
     elif (user_guess > answer):
         percentage =  (8-user_guess)/(8-answer) * 100 # what is this formula? not proportional if you're coming from above or below from same distance. am i being dumb?
 
-	accuracy.ChangeDutyCycle(percentage)
+    accuracy.ChangeDutyCycle(percentage)
     # - For example if the answer is 6 and a user guesses 4, the brightness should  be at 4/6*100 = 66%
     # - If they guessed 7, the brightness would be at ((8-7)/(8-6)*100 = 50%
 
@@ -300,20 +300,20 @@ def trigger_buzzer():
     # If the user is off by an absolute value of 3, the buzzer should sound once every second
     # If the user is off by an absolute value of 2, the buzzer should sound twice every second
     # If the user is off by an absolute value of 1, the buzzer should sound 4 times a second
-	if (abs(answer - user_guess) == 3):
+    if (abs(answer - user_guess) == 3):
 		#buzzer = GPIO.PWM(buzzer_sound, 1)
         #buzzer.start(50)
         buzzer.ChangeFrequency(1)
-	elif (abs(answer - user_guess) == 2):
+    elif (abs(answer - user_guess) == 2):
 		#buzzer = GPIO.PWM(buzzer_sound, 0.5)
 		#buzzer.start(50)
         buzzer.ChangeFrequency(2)
-	elif (abs(answer - user_guess) == 1):
+    elif (abs(answer - user_guess) == 1):
 		#buzzer = GPIO.PWM(buzzer_sound, 0.25)
 		#buzzer(50)
         buzzer.ChangeFrequency(4)
-	else:
-		GPIO.output(buzzer, GPIO.LOW)
+    else:
+        GPIO.output(buzzer, GPIO.LOW)
 
 	#time.sleep(0.25)
 	#GPIO.output(buzzer, GPIO.LOW)
