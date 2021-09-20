@@ -190,7 +190,7 @@ def btn_increase_pressed(channel):
 	else:
 		GPIO.output(LED_value[2], False)
 
-	if ((user_guess mod 2) == 0):
+	if ((user_guess%2) == 0):
 		GPIO.output(LED_value[0], False)
 	else:
 		GPIO.output(LED_value[0], True)
