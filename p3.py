@@ -134,11 +134,11 @@ def fetch_scores():
     # get however many scores there are
     score_count = ES2EEPROM.read_byte(eeprom, 0) # read byte from register 0
     # Get the scores
-    temp_scores = ES2EEPROM.read_block(eeprom, 0, 13) # read from block 1 because that is where the scores are
+    temp_scores = ES2EEPROM.read_block(eeprom, 1, 16) # read from block 1 because that is where the scores are
     temp_scores_2 = []
 
     # convert the codes back to ascii
-    for i in range(4, len(temp_scores)-4, 4):
+    for i in range(0, len(temp_scores)-4, 4):
         print("print in fetch_scores(): " + str(chr(temp_scores[i])) + " " + str(chr(temp_scores[i+1])) + " " + str(chr(temp_scores[i+2])))
         temp_scores_2.append(chr(temp_scores[i]))
         temp_scores_2.append(chr(temp_scores[i+1]))
