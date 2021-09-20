@@ -112,13 +112,17 @@ def setup():
 	buzzing.start(50)
 
     # Setup debouncing and callbacks
-	callback_increase = ButtonHandler(btn_increase, real_cb, edge='rising', bouncetime = 100)
-	callback_increase.start()
-	GPIO.add_event_detect(btn_increase, GPIO.RISING, callback = btn_increase_pressed)
+    GPIO.setup(btn_increase, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(btn_submit, GPIO.IN,  pull_up_down=GPIO.PUD_UP)
+    GPIO.add_event_detect(btn_increase, GPIO.FALLING, callback=btn_increase_pressed, bouncetime=500)  
+    GPIO.add_event_detect(btn_submit, GPIO.FALLING, callback=btn_guess_pressed, bouncetime=500)
+	# callback_increase = ButtonHandler(btn_increase, real_cb, edge='rising', bouncetime = 100)
+	# callback_increase.start()
+	# GPIO.add_event_detect(btn_increase, GPIO.RISING, callback = btn_increase_pressed)
 
-	callback_submit = ButtonHandler(btn_submit, realcb, edge='rising', bouncetime = 100)
-	callback_submit.start()
-	GPIO.add_event_detect(btn_submit, GPIO.RISING, callback = btn_guess_pressed)
+	# callback_submit = ButtonHandler(btn_submit, realcb, edge='rising', bouncetime = 100)
+	# callback_submit.start()
+	# GPIO.add_event_detect(btn_submit, GPIO.RISING, callback = btn_guess_pressed)
 
 
 # Load high scores
