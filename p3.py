@@ -46,7 +46,7 @@ def welcome():
 def menu():
     global end_of_game, answer
     end_of_game = False
-    setup()
+    # setup() - can't have the pwm thingy in a loop
     option = input("Select an option:   H - View High Scores     P - Play Game       Q - Quit\n")
     option = option.upper()
     if option == "H":
@@ -138,7 +138,7 @@ def fetch_scores():
     temp_scores_2 = []
 
     # convert the codes back to ascii
-    for i in range(0, len(temp_scores)-1, 4):
+    for i in range(0, len(temp_scores)-4, 4):
         print("print in fetch_scores(): " + str(chr(temp_scores[i])) + " " + str(chr(temp_scores[i+1])) + " " + str(chr(temp_scores[i+2])))
         temp_scores_2.append(chr(temp_scores[i]))
         temp_scores_2.append(chr(temp_scores[i+1]))
@@ -160,6 +160,7 @@ def save_scores():
     # fetch scores
     score_count, temp_scores = fetch_scores()
     # include new score
+    print(name[0] + " " + name[1] + " " + name[2])
     temp_scores.append(name[0])
     temp_scores.append(name[1])
     temp_scores.append(name[2])
