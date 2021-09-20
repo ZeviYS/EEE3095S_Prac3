@@ -199,7 +199,7 @@ def btn_increase_pressed(channel):
     else:
         GPIO.output(LED_value[0], True)
 
-    if ((user guess == 2) or (user_guess == 3) or (user_guess == 6) or (user_guess == 7)): # hahaha hardcoding is beautiful
+    if ((user_guess == 2) or (user_guess == 3) or (user_guess == 6) or (user_guess == 7)): # hahaha hardcoding is beautiful
         GPIO.output(LED_value[1], True)
     else:
         GPIO.output(LED_value[1], False)
