@@ -160,16 +160,16 @@ def save_scores():
     # fetch scores
     score_count, temp_scores = fetch_scores()
     # include new score
-    print(name[0] + " " + name[1] + " " + name[2])
     temp_scores.append(name[0])
     temp_scores.append(name[1])
     temp_scores.append(name[2])
     temp_scores.append(count)
 	# scores.add() - # add would be if was a set, which wouldn't work for our case because it will only add the element if it doesn't exiist in the set already
     # sort
-    for i in range(0, len(temp_scores), 4):
+    for i in range(0, len(temp_scores)-4, 4):
         print("print in save_scores(): " + str(temp_scores[i]) + " " + str(temp_scores[i+1]) + " " + str(temp_scores[i+2]))
         usrname = temp_scores[i] + temp_scores[i+1] + temp_scores[i+2]
+        print(usrname)
         scores.append([usrname, temp_scores[i+3]])
     scores.sort(key=lambda x: x[1]) # means sort the multiple attribute list based off the attribute at x[1] in each element
     # update total amount of scores
