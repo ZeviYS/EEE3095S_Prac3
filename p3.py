@@ -132,57 +132,96 @@ def setup():
 def fetch_scores():
     global eeprom
     # get however many scores there are
-    score_count = ES2EEPROM.read_byte(eeprom, 0) # read byte from register 0
+    #score_count = ES2EEPROM.read_byte(eeprom, 0) # read byte from register 0
     # Get the scores
-    temp_scores = ES2EEPROM.read_block(eeprom, 1, 16) # read from block 1 because that is where the scores are
-    temp_scores_2 = []
+    #temp_scores = ES2EEPROM.read_block(eeprom, 2, 16) # read from block 1 because that is where the scores are
+    #temp_scores_2 = []
 
     # convert the codes back to ascii
-    for i in range(0, len(temp_scores)-4, 4):
-        print("print in fetch_scores(): " + str(chr(temp_scores[i])) + " " + str(chr(temp_scores[i+1])) + " " + str(chr(temp_scores[i+2])))
-        temp_scores_2.append(chr(temp_scores[i]))
-        temp_scores_2.append(chr(temp_scores[i+1]))
-        temp_scores_2.append(chr(temp_scores[i+2])) # each letter of name
+    #for i in range(0, len(temp_scores)-4, 4):
+    #    print("print in fetch_scores(): " + str(chr(temp_scores[i])) + " " + str(chr(temp_scores[i+1])) + " " + str(chr(temp_scores[i+2])))
+    #    temp_scores_2.append(chr(temp_scores[i]))
+    #    temp_scores_2.append(chr(temp_scores[i+1]))
+    #    temp_scores_2.append(chr(temp_scores[i+2])) # each letter of name
         #temp_scores_2[i] = chr(temp_scores[i])
         #temp_scores_2[i+1] = chr(temp_scores[i+1])
         #temp_scores_2[i+2] = chr(temp_scores[i+2]) # each letter of name
         #scores[i+3] = scores[i+3] # the number of attempts
 	# name = char(scores) # - what?
     # return back the results
-    return score_count, temp_scores_2
+    #return score_count, temp_scores_2
+    tscores = []
+    
+    #Retrieve High Scores
+    scores = ES2EEPROM.read_block(eeprom,0,13) 
+    score_count = scores[0]
+    tname = ""
+
+    # Ascii Conversion
+    for i in range(1,len(scores)):
+        if (i)%4 == 0:
+            tscores.append([tname, scores[i]])
+            tname = ""
+        else:
+            tname += chr(scores[i])
+
+    scores = tscores
+
+    # Return Results
+    return score_count, scores
 
 
 # Save high scores
 def save_scores():
 
-    global name, scores, count
+    #global name, scores, count
 
     # fetch scores
-    score_count, temp_scores = fetch_scores()
+    #score_count, temp_scores = fetch_scores()
     # include new score
-    temp_scores.append(name[0])
-    temp_scores.append(name[1])
-    temp_scores.append(name[2])
-    temp_scores.append(count)
+    #temp_scores.append(name[0])
+    #temp_scores.append(name[1])
+    #temp_scores.append(name[2])
+    #temp_scores.append(count)
 	# scores.add() - # add would be if was a set, which wouldn't work for our case because it will only add the element if it doesn't exiist in the set already
     # sort
-    for i in range(0, len(temp_scores)-4, 4):
-        print("print in save_scores(): " + str(temp_scores[i]) + " " + str(temp_scores[i+1]) + " " + str(temp_scores[i+2]))
-        usrname = temp_scores[i] + temp_scores[i+1] + temp_scores[i+2]
-        print(usrname)
-        scores.append([usrname, temp_scores[i+3]])
-    scores.sort(key=lambda x: x[1]) # means sort the multiple attribute list based off the attribute at x[1] in each element
+    #for i in range(0, len(temp_scores)-4, 4):
+    #    print("print in save_scores(): " + str(temp_scores[i]) + " " + str(temp_scores[i+1]) + " " + str(temp_scores[i+2]))
+    #    usrname = temp_scores[i] + temp_scores[i+1] + temp_scores[i+2]
+    #    print(usrname)
+    #    scores.append([usrname, temp_scores[i+3]])
+    #scores.sort(key=lambda x: x[1]) # means sort the multiple attribute list based off the attribute at x[1] in each element
     # update total amount of scores
-    score_count+=1
+    #score_count+=1
 	#score_amount = length(score)
     # write new scores
-    for i in range(0, len(temp_scores), 4):
-        temp_scores[i] = ord(temp_scores[i])
-        temp_scores[i+1] = ord(temp_scores[i+1])
-        temp_scores[i+2] = ord(temp_scores[i+2]) # each letter of name, convert back to binary
-        #temp_scores[i+3] = temp_scores[i+3] # the number of attempts
-    ES2EEPROM.write_byte(eeprom, 0, score_count) # write the number of scores to the byte in register 0
-    ES2EEPROM.write_block(eeprom, 1, temp_scores)
+    # for i in range(0, len(temp_scores), 4):
+    #     temp_scores[i] = ord(temp_scores[i])
+    #     temp_scores[i+1] = ord(temp_scores[i+1])
+    #     temp_scores[i+2] = ord(temp_scores[i+2]) # each letter of name, convert back to binary
+    #     #temp_scores[i+3] = temp_scores[i+3] # the number of attempts
+    # ES2EEPROM.write_byte(eeprom, 0, score_count) # write the number of scores to the byte in register 0
+    # ES2EEPROM.write_block(eeprom, 1, temp_scores)
+    global count, eeprom, name
+    s_count, ss = fetch_scores()
+    s_count += 1 # add one to score count
+
+    # include new score
+    # sort
+    # update total amount of scores
+    # write new scores
+
+    ss.append([name, count])
+    ss.sort(key=lambda x: x[1])
+
+    data_to_write = []
+    data_to_write.append(s_count)
+
+    for score in ss[0:3]:
+        for letter in score[0]:
+            data_to_write.append(ord(letter))
+        data_to_write.append(score[1])
+    ES2EEPROM.write_block(eeprom, 0, data_to_write)
 
 
 # Generate guess number
